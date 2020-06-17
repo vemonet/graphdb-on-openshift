@@ -9,9 +9,9 @@ Deployment written using the images provided by Ontotext:
 * [Standard and Enterprise editions available on DockerHub](https://hub.docker.com/r/ontotext/graphdb/)
 * [Docker source code on GitHub](https://github.com/Ontotext-AD/graphdb-docker) (for the free version)
 
-In this deployment a PVC storage has been mounted on `/opt/graphdb/home` (inside the pod). 
+In this deployment a Persistent Volume has been mounted on `/opt/graphdb/home` (inside the pod). 
 
-⚠️ **Change the PVC name in  before creating the deployment**
+⚠️ **Change the Persistent Volume Claims used to fit your cluster before using the deployment**
 
 ```bash
 # Login to the OpenShift cluster
@@ -32,6 +32,8 @@ Deploy 1 master and 3 workers pods
 > PersistentVolume Home folder at `/opt/graphdb/home` inside the pods
 
 > PersistentVolume Import folder at `/root/graphdb-import` inside the pods.
+
+> CORS enabled 
 
 ## Connect to pod
 
