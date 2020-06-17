@@ -17,7 +17,7 @@ In this deployment a Persistent Volume has been mounted on `/opt/graphdb/home` (
 # Login to the OpenShift cluster
 oc login https://<openshift-url>:8443 --token=<openshift-token>
 
-# Go to the project where you want to deploy Apache Flink
+# Go to the project where you want to deploy GraphDB
 oc project my-project
 ```
 
