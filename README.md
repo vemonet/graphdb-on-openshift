@@ -1,5 +1,7 @@
 See the [DSRI documentation](https://maastrichtu-ids.github.io/dsri-documentation) to deploy it on the Data Science Research Infrastructure (OpenShift cluster at [Maastricht University](https://maastrichtuniversity.nl)).
 
+This deployment uses Kubernetes API objects, except for the Routes which are specific to OpenShift. It could be re-used to deploy on Kubernetes if the routes are changed to use Ingress.
+
 See Ontotext official [documentation to deploy secure GraphDB clusters](http://graphdb.ontotext.com/documentation/enterprise/ee/deploying-secure-cluster-with-docker.html).
 
 Deployment written using the images provided by Ontotext:
