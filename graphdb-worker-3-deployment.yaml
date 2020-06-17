@@ -1,0 +1,80 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: graphdb-worker-3
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: graphdb
+      component: worker
+  template:
+    metadata:
+      labels:
+        app: graphdb
+        component: worker
+    spec:
+      containers:
+      - name: graphdb-worker-3
+        image: ontotext/graphdb:9.3.0-ee
+        workingDir: /opt/graphdb/home
+        # command: ["-Dgraphdb.home", "/opt/graphdb/home", "-Dgraphdb.workbench.cors.enable", "true"]
+        args: ["-Dgraphdb.home=/opt/graphdb/home", "-Dgraphdb.workbench.cors.enable=true"]
+        ports:
+        - containerPort: 7200
+          name: graphdb
+        resources:
+            limits:
+              memory: "50Gi"
+              cpu: "16"
+        # livenessProbe:
+        #   tcpSocket:
+        #     port: 7200
+        #   initialDelaySeconds: 30
+        #   periodSeconds: 60
+        volumeMounts:
+        - name: pvc-volume
+          mountPath: /opt/graphdb/home
+          subPath: graphdb/worker/3
+        - name: pvc-volume
+          mountPath: /root/graphdb-import
+          subPath: graphdb/import
+        # securityContext:
+          # runAsUser: 9999  # If need to run as a specific user
+      volumes:
+      - name: pvc-volume
+        persistentVolumeClaim:
+          claimName: pvc-mapr-projects-test-vincent
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: graphdb-worker-3-service
+spec:
+  type: NodePort
+  ports:
+  - name: graphdb
+    port: 7200
+    targetPort: 7200
+  selector:
+    app: graphdb
+    component: worker
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: graphdb-worker3
+  labels:
+    app: "graphdb"
+    component: "worker"
+spec:
+  host: ''
+  to:
+    kind: Service
+    name: graphdb-worker-3-service
+    weight: 100
+  port:
+    targetPort: "7200"
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
